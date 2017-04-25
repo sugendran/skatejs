@@ -1,0 +1,20 @@
+<!doctype html>
+<title>Safari test</title>
+
+<x-hello name="world"></x-hello>
+
+<script type="module">
+  import { Component, h } from '../es-latest/index.js';
+
+  customElements.define('x-hello', class extends Component {
+    static get props() {
+      return {
+        name: {attribute:true}
+      }
+    }
+
+    renderCallback ({ name }) {
+      return h('span', {}, `Hello, ${name}!`);
+    }
+  });
+</script>

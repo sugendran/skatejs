@@ -29,7 +29,13 @@
   "dependencies": {},
   "devDependencies": {
     "@skatejs/web-components": "^1.0.0",
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.1.1",
+    "babel-plugin-modules-map": "^1.0.0",
+    "babel-plugin-modules-web-compat": "^1.0.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.4.0",
     "bore": "^1.1.0",
     "commitizen": "^2.8.2",
     "cz-conventional-changelog": "2.0.0",
@@ -47,6 +53,7 @@
     "preact": "*"
   },
   "scripts": {
+    "transpile": "BABEL_ENV=webify babel src --out-dir es-latest",
     "docs:build": "gitbook install && gitbook build",
     "docs:watch": "gitbook install && gitbook serve",
     "prepublish": "nwb build",
@@ -62,5 +69,35 @@
   },
   "semistandard": {
     "parser": "babel-eslint"
+  },
+  "babel": {
+    "env": {
+      "webify": {
+        "plugins": [
+          "transform-class-properties",
+          "transform-object-rest-spread",
+          [
+            "modules-map",
+            {
+              "preact": "preact/dist/preact.esm"
+            }
+          ],
+          "modules-web-compat"
+        ],
+        "presets": [
+          [
+            "env",
+            {
+              "modules": false,
+              "targets": {
+                "browsers": [
+                  "safari >= 10"
+                ]
+              }
+            }
+          ]
+        ]
+      }
+    }
   }
 }
