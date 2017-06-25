@@ -5,6 +5,6 @@ esnext/
 lib/
 node_modules/
 umd/
-*.log*
+*.log
 _book/
 ts-output/
