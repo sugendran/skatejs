@@ -34,51 +34,12 @@
     "commitmsg": "validate-commit-msg",
     "docs:build": "gitbook install && gitbook build",
     "docs:watch": "gitbook install && gitbook serve",
-    "precommit": "lerna exec --since -- semistandard",
+    "precommit": "lerna exec --since -- semistandard {src,test}/{*,**/*}.js",
     "test": "lerna exec --since -- semistandard && tsc -p ./ && jest"
   },
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
     }
-  },
-  "babel": {
-    "plugins": [
-      "transform-es2015-modules-commonjs"
-    ],
-    "presets": [
-      "react",
-      "stage-0"
-    ]
-  },
-  "jest": {
-    "modulePathIgnorePatterns": [
-      "./node_modules"
-    ],
-    "setupFiles": [
-      "./test/unit/setup"
-    ],
-    "setupTestFrameworkScriptFile": "./test/unit/setup-test",
-    "testEnvironment": "@skatejs/ssr/jest"
-  },
-  "semistandard": {
-    "globals": [
-      "Class",
-      "CustomEvent",
-      "customElements",
-      "CustomElementRegistry",
-      "Event",
-      "EventTarget",
-      "HTMLElement",
-      "MutationObserver",
-      "Node"
-    ],
-    "ignore": [
-      "flow-typed"
-    ],
-    "parser": "babel-eslint",
-    "plugins": [
-      "flowtype"
-    ]
   }
 }

@@ -29,5 +29,41 @@
   },
   "scripts": {
     "prepublish": "nwb build && babel src --out-dir esnext --presets=stage-0,es2017,es2016,react"
+  },
+  "babel": {
+    "plugins": [
+      "transform-es2015-modules-commonjs"
+    ],
+    "presets": [
+      "react",
+      "stage-0"
+    ]
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "./node_modules"
+    ],
+    "setupFiles": [
+      "./test/unit/setup"
+    ],
+    "setupTestFrameworkScriptFile": "./test/unit/setup-test",
+    "testEnvironment": "@skatejs/ssr/jest"
+  },
+  "semistandard": {
+    "globals": [
+      "Class",
+      "CustomEvent",
+      "customElements",
+      "CustomElementRegistry",
+      "Event",
+      "EventTarget",
+      "HTMLElement",
+      "MutationObserver",
+      "Node"
+    ],
+    "parser": "babel-eslint",
+    "plugins": [
+      "flowtype"
+    ]
   }
 }
