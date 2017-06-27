@@ -208,6 +208,51 @@ describe('withProps', () => {
     });
   });
 
+  describe('objects with multiple attributes', () => {
+    let elem;
+
+    beforeEach((done) => {
+      const propLocal = props.object;
+      elem = new (define(class extends withUnique(withProps()) {
+        static props = {
+          fooBar: Object.freeze({
+            source: true,
+            attribute: true,
+            default: Object.freeze({}),
+            serialize: JSON.stringify,
+            deserialize: JSON.parse
+          }),
+          bazPah: Object.freeze({
+            source: true,
+            attribute: true,
+            default: Object.freeze({}),
+            serialize: JSON.stringify,
+            deserialize: JSON.parse
+          })
+        };
+      }))();
+      document.body.appendChild(elem);
+      afterMutations(done);
+    });
+
+    afterEach(() => {
+      document.body.removeChild(elem);
+    });
+
+    it('deserializes', (done) => {
+      elem.setAttribute('foo-bar', '{"one": 1}');
+      elem.setAttribute('baz-pah', '{"two": 2}');
+      afterMutations(
+        () => expect(typeof elem.fooBar).toBe('object'),
+        () => expect(typeof elem.bazPah).toBe('object'),
+        () => expect(elem.fooBar.one).toEqual(1),
+        () => expect(elem.bazPah.two).toEqual(2),
+        done
+      );
+    });
+
+  });
+
   describe('string', () => {
     it('values', (done) => {
       const elem = create(props.string);
