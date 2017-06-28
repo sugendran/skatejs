@@ -3,7 +3,7 @@
 
 import { mount } from '@skatejs/bore';
 import { h } from '@skatejs/val';
-import { Component, define, h as vdom } from '../../src';
+import { Component, define, h as vdom, withComponent, withProps, props } from '../../src';
 
 import afterMutations from '../lib/after-mutations';
 import fixture from '../lib/fixture';
@@ -194,6 +194,38 @@ describe('withRender', () => {
         }
       });
       return mount(<Elem />).waitFor(w => w.has(<div>testing</div>));
+    });
+  });
+
+  describe('objects with multiple attributes', () => {
+    let fixtureElem;
+
+    it((done) => {
+      const Elem = define(class extends withComponent(withProps()) {
+        static is = 'x-elem';
+        static props = {
+          fooBar: { ...props.object, ...{ attribute: true } },
+          bazPah: { ...props.object, ...{ attribute: true } }
+        };
+        renderCallback ({ fooBar, bazPah }) {
+          expect(typeof fooBar).toBe('object');
+          expect(typeof bazPah).toBe('object');
+          expect(fooBar.one).toEqual(1);
+          expect(bazPah.two).toEqual(2);
+        }
+      });
+      fixtureElem = fixture();
+      fixtureElem.innerHTML = `
+        <${Elem.is}
+          foo-bar='{"one": 1}'
+          baz-pah='{"two": 2}'
+        />
+      `;
+      afterMutations(done);
+    });
+
+    afterEach(() => {
+      fixtureElem.innerHTML = '';
     });
   });
 });
